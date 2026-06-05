@@ -123,4 +123,4 @@ AlexSham/Toxic_Russian_Comments  (THREAT → critical)
 - **Обучение:** Hugging Face `transformers` + `Trainer`
 - **Валидация:** `TimeSeriesSplit` по дате публикации
 - **Интерфейс:** Streamlit / Gradio
-- **Инференс:** ONNX-квантизация для скорости
+- **Инференс:** [на стадии обдумывания]

@@ -2,6 +2,7 @@
 
 **Проект:** EcoPulse - Система мониторинга ESG-репутации  
 **Задача:** Описание датасета, EDA, оценка разметки, стратегия валидации
+
 Ссылка на Colab: https://drive.google.com/file/d/1U0mcvUswM27DoVEWRfNq_EWxrgYCc0ZY/view?usp=sharing
 
 ---

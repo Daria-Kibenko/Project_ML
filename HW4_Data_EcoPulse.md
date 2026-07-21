@@ -51,7 +51,7 @@
 
 > Сильный дисбаланс (~1:24). Для обучения необходимо использовать class_weight='balanced' или взвешенную функцию потерь. Основная метрика – PR-AUC (или F1 по классу critical), Accuracy вводит в заблуждение.
 
-![eda_class_distribution](EcoPulse/hw4/pic/eda_class_distribution.png)
+![EcoPulse/hw4/pic/eda_class_distribution.png]
 
 **Вывод для моделирования:** использовать `class_weight='balanced'` или взвешенный loss. Основная метрика - Recall по классу `critical` и PR-AUC, а не Accuracy (при дисбалансе Accuracy вводит в заблуждение).
 

@@ -1,0 +1,6 @@
+ecopulse_project/ecopulse/data/data/*.csv
+ecopulse_project/ecopulse/model/model/checkpoints/
+ecopulse_project/logs/*.log
+ecopulse_project/ecopulse/model/model/*.onnx
+*.pt
+*.safetensors

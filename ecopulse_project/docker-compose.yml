@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+
+  # Парсер + Telegram-бот
+  ecopulse:
+    build: .
+    container_name: ecopulse_main
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./ecopulse/db:/app/ecopulse/db
+      - ./logs:/app/logs
+      - ./ecopulse/model:/app/ecopulse/model
+      - ./ecopulse/data:/app/ecopulse/data
+    command: python main.py
+    depends_on:
+      - worker
+    networks:
+      - ecopulse_net
+
+  # Воркер классификации (масштабируемый)
+  worker:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./ecopulse/db:/app/ecopulse/db
+      - ./ecopulse/model:/app/ecopulse/model
+    command: python ecopulse/worker.py
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 512M
+    networks:
+      - ecopulse_net
+
+  # FastAPI REST
+  api:
+    build: .
+    container_name: ecopulse_api
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ecopulse/db:/app/ecopulse/db
+      - ./ecopulse/model:/app/ecopulse/model
+    command: uvicorn ecopulse.api.main:app --host 0.0.0.0 --port 8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - ecopulse_net
+
+  # Streamlit дашборд
+  dashboard:
+    build: .
+    container_name: ecopulse_dashboard
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8502:8501"
+    volumes:
+      - ./ecopulse/db:/app/ecopulse/db
+      - ./ecopulse/model:/app/ecopulse/model
+      - ./logs:/app/logs           # добавлено для сохранения логов
+    command: >
+      python -m streamlit run ecopulse/dashboard/app.py
+      --server.port=8501
+      --server.address=0.0.0.0
+      --server.headless=true
+    networks:
+      - ecopulse_net
+
+networks:
+  ecopulse_net:
+    driver: bridge

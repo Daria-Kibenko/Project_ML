@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+*.log
+*.db
+.env
+.git
+.gitignore
+*.session
+.pytest_cache
+logs/
+ecopulse/db/
+ecopulse/model/
+ecopulse/data/
